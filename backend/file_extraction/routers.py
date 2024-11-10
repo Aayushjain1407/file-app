@@ -73,3 +73,4 @@ async def get_extraction(file_id: int, db: Session = Depends(get_db)):
         return extraction
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    

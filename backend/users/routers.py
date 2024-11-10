@@ -23,6 +23,7 @@ def verify_user(verify_data: schemas.UserVerify, db: Session = Depends(get_db)):
         code=verify_data.code
     )
 
+
 @router.post("/login")
 def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
     user = services.authenticate_user(

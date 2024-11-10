@@ -12,6 +12,7 @@ def create_raw_file(db: Session, file_data: bytes, user_id: int, filename: str):
         file_data=file_data,
         # created_at=datetime.utcnow()
     )
+    
     db.add(db_raw_file)
     db.commit()
     db.refresh(db_raw_file)

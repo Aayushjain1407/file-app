@@ -22,6 +22,7 @@ class FileExtractionCreate(FileExtractionBase):
 class RawFile(RawFileBase):
     id: int
 
+
     class Config:
         orm_mode = True
 

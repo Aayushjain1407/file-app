@@ -20,6 +20,7 @@ class UserCreate(UserBase):
             raise ValueError('Username must be at least 3 characters long')
         return v
 
+
 class UserVerify(BaseModel):
     phone_number: str
     code: str

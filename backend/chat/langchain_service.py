@@ -46,3 +46,4 @@ class ChatService:
     def clear_memory(self):
         """Clear conversation memory"""
         self.memory.clear()
+        

@@ -17,6 +17,7 @@ class BaseModel(Base):
         onupdate=datetime.datetime.utcnow,
     )
 
+
     def as_dict(self):
         dict_ = {}
         for key in self.__mapper__.c.keys():

@@ -41,6 +41,7 @@ def create_user(db: Session, user: schemas.UserCreate):
         # For now, we'll just print it
         print(f"Verification code for {user.phone_number}: {verification_code}")
         
+        
         return db_user
     except Exception as e:
         db.rollback()

@@ -74,3 +74,4 @@ def _get_user_token(user: User, refresh_token = None):
         refresh_token=refresh_token,
         expires_in=access_token_expiry.seconds  # in seconds
     )
+    

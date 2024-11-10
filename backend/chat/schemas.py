@@ -32,3 +32,4 @@ class ChatSessionResponse(BaseModel):
 class ChatHistory(BaseModel):
     session: ChatSessionResponse
     messages: List[MessageResponse]
+    

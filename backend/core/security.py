@@ -8,6 +8,7 @@ from fastapi import Depends
 from db.session import get_db
 from users.models import User
 
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 

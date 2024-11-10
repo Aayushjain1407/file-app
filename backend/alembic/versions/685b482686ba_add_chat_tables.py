@@ -61,3 +61,5 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_table('chat_messages')
     op.drop_table('chat_sessions')
+    
+

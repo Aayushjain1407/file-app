@@ -10,6 +10,7 @@ class ChatSession(Base):
     title = Column(String, nullable=True)
     last_message_at = Column(DateTime, default=datetime.utcnow)
     
+    
     # Relationships
     user = relationship("User", back_populates="chat_sessions")
     messages = relationship("ChatMessage", back_populates="session")

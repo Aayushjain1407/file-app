@@ -9,6 +9,7 @@ from core.security import get_current_user
 from users.models import User
 import json
 
+
 router = APIRouter(
     prefix="/chat",
     tags=["Chat"]

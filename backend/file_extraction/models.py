@@ -6,6 +6,7 @@ from db.basemodel import BaseModel
 class RawFile(BaseModel):
     __tablename__ = "raw_files"
 
+
     # Primary Key for the raw file record
     id = Column(Integer, primary_key=True, index=True)
     

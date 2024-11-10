@@ -23,3 +23,4 @@ class OTP(BaseModel):
     code = Column(String)
     expires_at = Column(DateTime)
     is_used = Column(Boolean, default=False)
+    

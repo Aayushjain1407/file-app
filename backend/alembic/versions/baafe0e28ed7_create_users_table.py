@@ -36,6 +36,7 @@ def upgrade() -> None:
         sa.UniqueConstraint('phone_number')
     )
     
+    
     op.create_table(
         'otp',
         sa.Column('id', sa.String(length=12), nullable=False),

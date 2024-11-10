@@ -38,6 +38,7 @@ def upgrade() -> None:
     )
 
 
+
 def downgrade() -> None:
     # Drop the extracted_data table
     op.drop_table('extracted_data')
