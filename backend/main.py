@@ -34,6 +34,7 @@ async def validation_exception_handler(request, exc):
     )
 
 # Include all routers
+app.include_router(auth_router, prefix="/auth/token", tags=["Auth1"])
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(user_router, prefix="/users", tags=["Users"])
 app.include_router(chat_router, prefix="/chat", tags=["Chat"]) 

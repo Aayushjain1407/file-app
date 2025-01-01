@@ -13,7 +13,7 @@ from jose import JWTError
 logging.basicConfig(level=logging.DEBUG)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="")
 
 def get_password_hash(password):
     return pwd_context.hash(password)
@@ -25,12 +25,13 @@ def create_access_token(data,  expiry: timedelta = timedelta(minutes=15)):
     payload = data.copy()
     expire_in = datetime.utcnow() + expiry
     payload.update({"exp": expire_in})
+    print(payload)
     return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 def create_refresh_token(data):
     return jwt.encode(data, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
-def get_token_payload(token):
+def get_token_payload(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
