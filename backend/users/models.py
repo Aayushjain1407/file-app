@@ -11,7 +11,6 @@ class User(BaseModel):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
-    verification_code = Column(String, nullable=True)
     
     #relationships
     raw_file = relationship("RawFile", back_populates="user")

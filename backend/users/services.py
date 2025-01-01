@@ -2,13 +2,17 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 from core.security import get_password_hash, verify_password
 from fastapi import HTTPException
-from datetime import datetime
+from datetime import datetime,timedelta
 import random
 import string
+from twilio.rest import Client
+from fastapi import HTTPException
+from core.config import settings
 
-def generate_verification_code(length: int = 6) -> str:
-    """Generate a random verification code."""
-    return ''.join(random.choices(string.digits, k=length))
+twilio_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+# def generate_verification_code(length: int = 6) -> str:
+#     """Generate a random verification code."""
+#     return ''.join(random.choices(string.digits, k=length))
 
 def create_user(db: Session, user: schemas.UserCreate):
     # Check if username exists
@@ -19,44 +23,69 @@ def create_user(db: Session, user: schemas.UserCreate):
     if db.query(models.User).filter(models.User.phone_number == user.phone_number).first():
         raise HTTPException(status_code=400, detail="Phone number already registered")
     
-    # Generate verification code
-    verification_code = generate_verification_code()
-    
-    # Create user object
     db_user = models.User(
-        username=user.username,
-        phone_number=user.phone_number,
-        hashed_password=get_password_hash(user.password),
-        verification_code=verification_code,
-        is_verified=False
+    username=user.username,
+    phone_number=user.phone_number,
+    hashed_password=get_password_hash(user.password)
     )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
     
+    # Generate and send OTP    
+    otp = generate_otp(db, db_user.id)
+    if not db_user.phone_number.startswith("+91"):
+        db_user.phone_number = "+91"+db_user.phone_number
+    send_otp_sms(db_user.phone_number, otp)
+    
+
     try:
         # Add and commit to database
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
         
-        # Here you would normally send the verification code via Twilio
-        # For now, we'll just print it
-        print(f"Verification code for {user.phone_number}: {verification_code}")
-        
-        
         return db_user
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
+    
+def generate_otp(db: Session, user_id: str):
+    otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
+    db_otp = models.OTP(user_id=user_id, code=otp, expires_at=expires_at)
+    db.add(db_otp)
+    db.commit()
+    return otp
+
+def send_otp_sms(phone_number: str, otp: str):
+    try:
+        message = twilio_client.messages.create(
+            body=f"Your OTP is: {otp}",
+            from_=settings.TWILIO_PHONE_NUMBER,
+            to=phone_number
+        )
+        print(f"SMS sent: {message.sid}")
+    except Exception as e:
+        print(f"Error sending SMS: {str(e)}")
 
 def verify_user(db: Session, phone_number: str, code: str):
     user = db.query(models.User).filter(models.User.phone_number == phone_number).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    if user.verification_code != code:
-        raise HTTPException(status_code=400, detail="Invalid verification code")
+    db_otp = db.query(models.OTP).filter(
+        models.OTP.user_id == user.id,
+        models.OTP.code == code,
+        models.OTP.is_used == False,
+        models.OTP.expires_at > datetime.utcnow()
+    ).first()
     
+    if not db_otp:
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+    
+    db_otp.is_used = True
     user.is_verified = True
-    user.verification_code = None  # Clear the verification code after use
     
     db.commit()
     db.refresh(user)

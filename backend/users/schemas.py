@@ -6,6 +6,7 @@ class UserBase(BaseModel):
     phone_number: str
 
 class UserCreate(UserBase):
+    # id:str
     password: str
 
     @validator('phone_number')
