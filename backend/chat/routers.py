@@ -8,7 +8,8 @@ from db.session import get_db
 from core.security import get_current_user
 from users.models import User
 import json
-
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 router = APIRouter(
     prefix="/chat",
@@ -21,6 +22,7 @@ async def create_chat_session(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    logging.debug(f"Attempting chat creation for user:  {current_user.id}")
     return services.create_chat_session(db=db, user_id=current_user.id, title=session.title)
 
 @router.get("/sessions", response_model=List[schemas.ChatSessionResponse])
@@ -28,6 +30,7 @@ async def get_chat_sessions(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    logging.debug(f"Attempting retrival of chats for user: {current_user.id}")
     return services.get_user_sessions(db=db, user_id=current_user.id)
 
 @router.get("/sessions/{session_id}", response_model=schemas.ChatHistory)

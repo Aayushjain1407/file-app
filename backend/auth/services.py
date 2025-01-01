@@ -62,7 +62,7 @@ def _verify_user_access(user: User):
         )
 
 def _get_user_token(user: User, refresh_token = None):
-    payload = {"id": user.id,"role":user.role.value}
+    payload = {"id": user.id}
     
     access_token_expiry = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     

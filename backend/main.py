@@ -3,6 +3,7 @@ from file_extraction.routers import router as file_extraction_router
 from auth.routes import router as auth_router
 from users.routers import router as user_router
 from chat.routers import router as chat_router  
+from core.security import JWTAuth
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 from fastapi.responses import JSONResponse
@@ -13,15 +14,16 @@ app = FastAPI(
     description="A file chatting application with AI capabilities",
     version="1.0.0"
 )
-
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(AuthenticationMiddleware, backend=JWTAuth())
 
 # Error handlers
 @app.exception_handler(RequestValidationError)

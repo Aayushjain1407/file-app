@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
+from core.security import get_current_user
 from . import models, schemas, services
+from users.models import User
 from db.session import get_db
 
 router = APIRouter()
@@ -9,7 +11,7 @@ router = APIRouter()
 # Route to upload files and extract data
 @router.post("/upload-file/", response_model=schemas.FileExtractionCreate)
 async def upload_file(
-    user_id: int,  # Move user_id to be the first parameter
+    current_user: User = Depends(get_current_user),
     file: UploadFile = File(...),  # File parameter comes after
     db: Session = Depends(get_db)
 ):

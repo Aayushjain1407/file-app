@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/users/me', {
+      const response = await axios.get('http://127.0.0.1:8000/users/users/login', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUser(response.data);
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (username, password) => {
-    const response = await axios.post('http://localhost:8000/auth/token', {
+    const response = await axios.post('http://127.0.0.1:8000/auth/token', {
       username,
       password
     });
