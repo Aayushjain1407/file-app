@@ -59,7 +59,7 @@ async def get_extracted_data(user_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Optional: Add endpoint to get specific extraction
+
 @router.get("/extraction/{file_id}", response_model=schemas.FileExtraction)
 async def get_extraction(file_id: int, db: Session = Depends(get_db)):
     try:

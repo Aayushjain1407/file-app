@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from file_extraction.routers import router as file_extraction_router
 from auth.routes import router as auth_router
 from users.routers import router as user_router
-from chat.routers import router as chat_router  # Add this line
+from chat.routers import router as chat_router  
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 from fastapi.responses import JSONResponse
