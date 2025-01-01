@@ -15,6 +15,7 @@ class User(BaseModel):
     
     #relationships
     raw_file = relationship("RawFile", back_populates="user")
+    chat_sessions = relationship("ChatSession", back_populates="user")
     
 class OTP(BaseModel):
     __tablename__ = 'otp'

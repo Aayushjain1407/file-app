@@ -1,8 +1,8 @@
-"""add chat tables
+"""adding chat tables
 
-Revision ID: 685b482686ba
-Revises: baafe0e28ed7
-Create Date: 2024-11-10 18:03:39.911922
+Revision ID: f64fb1eee242
+Revises: d3292de82be9
+Create Date: 2025-01-01 13:34:55.809688
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '685b482686ba'
-down_revision: Union[str, None] = 'baafe0e28ed7'
+revision: str = 'f64fb1eee242'
+down_revision: Union[str, None] = '685b482686ba'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -62,4 +62,3 @@ def downgrade() -> None:
     op.drop_table('chat_messages')
     op.drop_table('chat_sessions')
     
-

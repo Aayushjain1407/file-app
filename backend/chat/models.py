@@ -1,9 +1,9 @@
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
-from db.basemodel import Base
+from db.basemodel import Base,BaseModel
 from datetime import datetime
 
-class ChatSession(Base):
+class ChatSession(BaseModel):
     __tablename__ = "chat_sessions"
     
     user_id = Column(String(12), ForeignKey("users.id"), nullable=False)
@@ -15,7 +15,7 @@ class ChatSession(Base):
     user = relationship("User", back_populates="chat_sessions")
     messages = relationship("ChatMessage", back_populates="session")
 
-class ChatMessage(Base):
+class ChatMessage(BaseModel):
     __tablename__ = "chat_messages"
     
     session_id = Column(String(12), ForeignKey("chat_sessions.id"), nullable=False)
