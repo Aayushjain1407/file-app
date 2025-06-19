@@ -121,7 +121,7 @@ project/
 
 ### Prerequisites
 - Python 3.12+
-- Node.js 16+
+- FastAPI 0.112+
 - PostgreSQL 13+
 - Twilio Account (for SMS verification)
 - OpenAI API Key (for LangChain)
